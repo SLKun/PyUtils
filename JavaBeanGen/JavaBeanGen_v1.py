@@ -1,12 +1,17 @@
+#!/usr/bin/python2
+
 import json
 import os
 import sys
 
 # read argument
-print sys.argv;
+print(sys.argv);
 
 # read json
-f = open("params.json");
+if len(sys.argv) > 1:
+	f = open(sys.argv[1] + ".json");
+else:
+	f = open("params.json");
 content = f.read();
 f.close();
 

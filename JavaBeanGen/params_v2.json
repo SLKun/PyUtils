@@ -1,0 +1,58 @@
+{
+    "commets": "允许外部变量值作为下级List的全局值, 允许内部List引用外部变量, 允许内部指定值时调用特殊函数处理",
+    "package": "com.doris",
+    "Classes": [
+        {
+            "class": "className",   
+            "modifier": "public",
+            "varibles": [
+                {
+                    "type": "int",
+                    "name": "num"
+                },
+                {
+                    "type": "String",
+                    "name": "str",
+                    "initVal": "This is a String"
+                }
+            ],
+            "method": {
+                "modifier": "public static",
+                "methods": [
+                    {
+                        "modifier": "public static",
+                        "name": "insert",
+                        "retType": "int",
+                        "arguType": "Department",
+                        "arguName": "department",
+                        "Exceptions": "Exception",
+                        "retVal": "0"
+                    },
+                    {
+                        "modifier": "public static",
+                        "name": "insert",
+                        "retType": "int",
+                        "arguType": "Department",
+                        "arguName": "department",
+                        "Exceptions": "Exception",
+                        "retVal": "0"
+                    }
+                ]
+            }
+        },
+        {
+            "class": "classB",
+            "varible": [
+                {
+                    "type": "int",
+                    "varName": "aInt"
+                },
+                {
+                    "type": "String",
+                    "varName": "str",
+                    "initVal": "This is a "
+                }
+            ]
+        }
+    ]
+}
