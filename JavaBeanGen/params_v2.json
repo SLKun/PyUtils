@@ -1,5 +1,5 @@
 {
-    "commets": "允许外部变量值作为下级List的全局值, 允许内部List引用外部变量, 允许内部指定值时调用特殊函数处理",
+    "comments": "允许外部变量值作为下级List的全局值, 允许内部List引用外部变量, 允许内部指定值时调用特殊函数处理",
     "package": "com.doris",
     "Classes": [
         {
@@ -8,12 +8,12 @@
             "varibles": [
                 {
                     "type": "int",
-                    "name": "num"
+                    "name": "num",
+                    "initVal": "10"
                 },
                 {
                     "type": "String",
-                    "name": "str",
-                    "initVal": "This is a String"
+                    "name": "str"
                 }
             ],
             "method": {
@@ -39,20 +39,6 @@
                     }
                 ]
             }
-        },
-        {
-            "class": "classB",
-            "varible": [
-                {
-                    "type": "int",
-                    "varName": "aInt"
-                },
-                {
-                    "type": "String",
-                    "varName": "str",
-                    "initVal": "This is a "
-                }
-            ]
         }
     ]
 }

@@ -89,5 +89,5 @@ ENV/
 .ropeproject
 
 # Generated JAVA & BAK Files
-.java
-.bak
+*.java
+*.bak

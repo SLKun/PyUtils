@@ -4,52 +4,108 @@ import json
 import os
 import sys
 
-# read argument
-print(sys.argv);
+def removeParams(item):
+	for key in item.keys():
+		if isinstance(item[key], unicode):
+			gEnv.pop(key);
+			
+def storeParams(item):
+	for key in item.keys():
+		if isinstance(item[key], unicode):
+			gEnv[key] = item[key];
+
+def printDic(dic):
+	if isinstance(dic, dict):
+		print("{");
+		for key in dic.keys():
+			sys.stdout.write(indent + key + ": ");
+			print(dic[key]);
+		print("}");
+
+def genIntent(level):
+	i = 0;
+	curIndent = "";
+	while i < level:
+		curIndent += indent;
+		i += 1;
+	return curIndent
+
+def chkVar(var):
+	if gEnv.has_key(var):
+		return gEnv[var];
+	return "";
+
+# arugments
+indent = "    ";
+gEnv = dict();
+gStack = list();
+
+# init
+gEnv["indentLevel"] = 0;
+gEnv["stackPointer"] = 0;
 
 # read json
+filename = "params_v2.json";
 if len(sys.argv) > 1:
-	f = open(sys.argv[1] + ".json");
-else:
-	f = open("params_v2.json");
-content = f.read();
+	filename = sys.argv[1] + ".json";
+gEnv["filename"] = filename;
+f = open(filename);
+paramJson = f.read();
 f.close();
 
 # parse json
-data = json.loads(content);
-for classItem in data:
-	# generate File
-	className = classItem["class"];
-	if os.path.exists(className + ".java") and os.path.isfile(className + ".java") :
+paramData = json.loads(paramJson);
+storeParams(paramData);
+# parse classes
+for classItem in paramData["Classes"]:
+	storeParams(classItem);
+	className = chkVar("class");
+	modifier = chkVar("modifier");
+	curIndent = genIntent(gEnv["indentLevel"]);
+
+	if os.path.exists(className + ".java"):
 		if os.path.exists(className + ".java.bak"):
 			os.remove(className + ".java.bak");
 		os.rename(className + ".java", className + ".java.bak");
 	f = open(className + ".java", "w");
-	# write to the file
-	f.write("public class " + className +"{\n");
+
+	f.write(curIndent + modifier + " class " + className +"{\n");
+
 	# generate private field
-	for var in classItem["varible"]:
-		f.write("\tprivate " + var["type"] + " " + var["varName"]);
-		if var.has_key("initVal") :
+	gEnv["indentLevel"] += 1;
+	for var in classItem["varibles"]:
+		storeParams(var);
+		varType = chkVar("type");
+		varName = chkVar("name");
+		initVal = chkVar("initVal");
+		curIndent = genIntent(chkVar("indentLevel"));
+
+		f.write(curIndent + "private " + varType + " " + varName);
+		if initVal != "":
 			f.write(" = ");
-			if var["type"] == "String" :
-				f.write('"' + var["initVal"] + '"');
+			if varType == "String" :
+				f.write('"' + initVal + '"');
 			else :
-				f.write(var["initVal"]);
+				f.write(initVal);
 		f.write(";\n");
+		removeParams(var);
 	f.write("\n");
+	storeParams(classItem);
+	gEnv["indentLevel"] -= 1;
 	# generate getter
-	for var in classItem["varible"]:
-		f.write("\tpublic " + var["type"] + " get");
-		f.write(var["varName"][0].upper() + var["varName"][1:len(var["varName"])]);
+	for var in classItem["varibles"]:
+		f.write(indent + "public " + var["type"] + " get");
+		f.write(var["name"][0].upper() + var["name"][1:len(var["name"])]);
 		f.write("(){\n");
-		f.write("\t\treturn " + var["varName"]);
-		f.write(";\n\t}\n\n");
+		f.write(indent + indent + "return " + var["name"]);
+		f.write(";\n" + indent + "}\n\n");
 	# generate Setter
-	for var in classItem["varible"]:
-		f.write("\tpublic void set");
-		f.write(var["varName"][0].upper() + var["varName"][1:len(var["varName"])]);
-		f.write("(" + var["type"] + " " + var["varName"] + "){\n");
-		f.write("\t\tthis." + var["varName"] + " = " + var["varName"]);
-		f.write(";\n\t}\n\n");
+	for var in classItem["varibles"]:
+		f.write(indent + "public void set");
+		f.write(var["name"][0].upper() + var["name"][1:len(var["name"])]);
+		f.write("(" + var["type"] + " " + var["name"] + "){\n");
+		f.write(indent + indent + "this." + var["name"] + " = " + var["name"]);
+		f.write(";\n" + indent + "}\n\n");
 	f.write("}\n");
+removeParams(paramData);
+printDic(gEnv);
