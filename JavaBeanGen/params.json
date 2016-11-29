@@ -3,8 +3,9 @@
     "package": "com.doris",
     "Classes": [
         {
-            "class": "className",   
+            "class": "className",
             "modifier": "public",
+            "initVal": "qwq",
             "varibles": [
                 {
                     "type": "int",
@@ -18,24 +19,34 @@
             ],
             "method": {
                 "modifier": "public static",
+                "Exceptions": "Exception",
                 "methods": [
                     {
-                        "modifier": "public static",
                         "name": "insert",
                         "retType": "int",
-                        "arguType": "Department",
-                        "arguName": "department",
-                        "Exceptions": "Exception",
-                        "retVal": "0"
+                        "retVal": "0",
+                        "args": [
+                            {
+                                "type": "int",
+                                "name": "Val"
+                            },
+                            {
+                                "type": "Department",
+                                "name": "department"
+                            }
+                        ]
                     },
                     {
-                        "modifier": "public static",
+                        "modifier": "public",
                         "name": "insert",
                         "retType": "int",
-                        "arguType": "Department",
-                        "arguName": "department",
-                        "Exceptions": "Exception",
-                        "retVal": "0"
+                        "retVal": "0",
+                        "args": [
+                            {
+                                "type": "Department",
+                                "name": "department"
+                            }
+                        ]
                     }
                 ]
             }
