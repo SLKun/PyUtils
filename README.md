@@ -1,2 +1,2 @@
-# pyutils
-Some Python Utils for myself
+# PyUtils
+Some Python Utils for myself Use.

@@ -1,55 +1,55 @@
 {
-    "comments": "允许外部变量值作为下级List的全局值, 允许内部List引用外部变量, 允许内部指定值时调用特殊函数处理",
-    "package": "com.doris",
-    "Classes": [
+  "package": "com.doris",
+  "Classes": [
+    {
+      "class": "className",
+      "modifier": "public",
+      "initVal": "qwq",
+      "varibles": [
         {
-            "class": "className",
-            "modifier": "public",
-            "initVal": "qwq",
-            "varibles": [
-                {
-                    "type": "int",
-                    "name": "num",
-                    "initVal": "10"
-                },
-                {
-                    "type": "String",
-                    "name": "str"
-                }
-            ],
-            "method": {
-                "modifier": "public static",
-                "Exceptions": "Exception",
-                "methods": [
-                    {
-                        "name": "insert",
-                        "retType": "int",
-                        "retVal": "0",
-                        "args": [
-                            {
-                                "type": "int",
-                                "name": "Val"
-                            },
-                            {
-                                "type": "Department",
-                                "name": "department"
-                            }
-                        ]
-                    },
-                    {
-                        "modifier": "public",
-                        "name": "insert",
-                        "retType": "int",
-                        "retVal": "0",
-                        "args": [
-                            {
-                                "type": "Department",
-                                "name": "department"
-                            }
-                        ]
-                    }
-                ]
-            }
+          "type": "int",
+          "name": "num",
+          "initVal": "10"
+        },
+        {
+          "type": "String",
+          "name": "str"
         }
-    ]
+      ],
+      "method": {
+        "modifier": "public static",
+        "Exceptions": ["IOException", "SQLException"],
+        "methods": [
+          {
+            "modifier": "static",
+            "name": "insert",
+            "retType": "int",
+            "retVal": "0",
+            "args": [
+              {
+                "type": "int",
+                "name": "Val"
+              },
+              {
+                "type": "Department",
+                "name": "department"
+              }
+            ]
+          },
+          {
+            "modifier": "public",
+            "name": "insert",
+            "retType": "int",
+            "retVal": "0",
+            "args": [
+              {
+                "type": "Department",
+                "name": "department"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

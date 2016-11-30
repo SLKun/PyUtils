@@ -6,9 +6,9 @@
 
 ## RoadMap
 
-- 维护一个全局的Environment
-- 每一层将Envinronment入栈
-- 检查每一层的数据类型
+- 维护一个全局的Environment [ok]
+- 每一层将Environment入栈 [ok]
+- 检查每一层的数据类型    [working]
 	- 如果是dict, 则认为是下一层
 	- 如果是List, 则将其并列展开
 	- 允许添加name$Method指定解析方式
