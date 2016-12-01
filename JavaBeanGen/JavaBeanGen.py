@@ -43,16 +43,34 @@ def parse_list_with_value(alist):
                     str += ", "
     return str
 
+
 def parse_list_with_dict(key, alist):
-    str = ""
+    s = ""
+    args = dict()
+    i = 0
     if isinstance(alist, list):
         for item in alist:
             if isinstance(item, dict):
+                # get args dict
                 for dicKey in item.keys():
                     if isinstance(item[dicKey], dict) or isinstance(item[dicKey], list):
                         return ""
-                    # if dicKey.startwith(key):
-                    #     print dicKey
+                    split = dicKey.split("_")
+                    if key.startswith(split[0]):
+                        if (len(split) == 3):
+                            args[split[2]] = item[dicKey]
+                        else:
+                            args[str(i)] = item[dicKey]
+                            i += 1
+                    else:
+                        return s
+                s += args["0"] + " " + args["1"]
+            else:
+                return s
+            if item != alist[-1]:
+                s += ", "
+    return s
+
 
 # update global Environment
 def update_environment(item):
@@ -63,7 +81,6 @@ def update_environment(item):
             gEnv[key] = parse_list_with_value(item[key])
             if gEnv[key] == "":
                 gEnv[key] = parse_list_with_dict(key, item[key])
-
 
 
 # get Var from Environment
@@ -174,16 +191,11 @@ for classItem in paramData["Classes"]:
         retType = get_var("retType")
         Exceptions = get_var("Exceptions")
         retVal = get_var("retVal")
+        args = get_var("args")
 
         f.write("\n")
         f.write(curIndent + modifier + " " + retType + " " + name + "(")
-        for arg in method["args"]:
-            push(arg)
-            arguName = get_var("name")
-            arguType = get_var("type")
-
-            f.write(arguType + " " + arguName + ", ")
-            pop()
+        f.write(gEnv["args"])
         f.write("\b\b")
         f.write(") throws " + Exceptions + "{\n")
         f.write(curIndent + indent + "return " + retVal + ";\n")

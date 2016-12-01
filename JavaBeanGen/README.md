@@ -17,7 +17,7 @@
 - 允许prefix_name避免单元素的List
 	- arg_type, arg_name
 - 允许key&进行部分填入
-	- modifier&填入public, 子层可以填入其他modfier同时采用父层Modifier
+	- modifier&填入public, 子层可以填入其他modifier同时采用父层Modifier
 - 允许name#\d分组
 	- Varibles#1, Varibles#2
 	- 不同的组可以使用不同的全局参数

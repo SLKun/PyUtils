@@ -27,12 +27,12 @@
             "retVal": "0",
             "args": [
               {
-                "type": "int",
-                "name": "Val"
+                "arg_type_0": "int",
+                "arg_name_1": "Val"
               },
               {
-                "type": "Department",
-                "name": "department"
+                "arg_type_0": "Department",
+                "arg_name_1": "department"
               }
             ]
           },
@@ -43,8 +43,8 @@
             "retVal": "0",
             "args": [
               {
-                "type": "Department",
-                "name": "department"
+                "arg_type": "Department",
+                "arg_name": "department"
               }
             ]
           }
