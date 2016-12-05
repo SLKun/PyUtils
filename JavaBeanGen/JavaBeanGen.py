@@ -3,6 +3,7 @@
 import json
 import os
 import sys
+import copy
 
 
 # helper function
@@ -18,8 +19,8 @@ def print_dic(dic):
 def print_stack():
     print "====== Stack Information ======"
     for item in gStack:
-        # print_dic(item)
-        print(item)
+        print item
+    print gEnv
 
 
 # generate proper Indent
@@ -75,12 +76,31 @@ def parse_list_with_dict(key, alist):
 # update global Environment
 def update_environment(item):
     for key in item.keys():
+        has_suffix = 0
+        # examine keys name
+        if '&' in key:
+            gEnv["gSession"].append(key[0:-1])
+            has_suffix = 1
+        if '$' in key:
+            gEnv["gSession"].remove(key[0:-1])
+            has_suffix = 1
+        # normal type
         if not (isinstance(item[key], list) or isinstance(item[key], dict)):
-            gEnv[key] = item[key]
+            if key in gEnv["gSession"] and gEnv.has_key(key):
+                gEnv[key] = gEnv[key] + " " + item[key]
+            elif has_suffix == 1:
+                gEnv[key[0:-1]] = item[key]
+            else:
+                gEnv[key] = item[key]
+        # for list
         if isinstance(item[key], list):
+            # for list with normal type
             gEnv[key] = parse_list_with_value(item[key])
+            # for list with dict
             if gEnv[key] == "":
                 gEnv[key] = parse_list_with_dict(key, item[key])
+            if gEnv[key] == "":
+                gEnv.pop(key)
 
 
 # get Var from Environment
@@ -93,16 +113,19 @@ def get_var(var):
 
 def push(item):
     global gEnv
-    newEnv = dict(gEnv)
-    gStack.append(gEnv)
-    gEnv = newEnv
+    lastEnv = copy.deepcopy(gEnv)
+    gStack.append(lastEnv)
     update_environment(item)
+    print "PUSHED: "
+    print_stack()
 
 
 def pop():
     global gEnv
     if len(gStack) != 0:
         gEnv = gStack.pop()
+    print "POPED:"
+    print_stack()
 
 
 # arugments
@@ -113,6 +136,7 @@ curIndent = ""
 
 # init
 gEnv["indentLevel"] = -1
+gEnv["gSession"] = list();
 
 # read json
 filename = "params.json"

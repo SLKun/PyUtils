@@ -17,11 +17,11 @@
         }
       ],
       "method": {
-        "modifier": "public static",
+        "modifier&": "public",
         "Exceptions": ["IOException", "SQLException"],
         "methods": [
           {
-            "modifier": "static",
+            "modifier$": "static",
             "name": "insert",
             "retType": "int",
             "retVal": "0",
@@ -37,7 +37,7 @@
             ]
           },
           {
-            "modifier": "public",
+            "modifier": "static",
             "name": "insert",
             "retType": "int",
             "retVal": "0",

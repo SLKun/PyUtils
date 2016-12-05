@@ -8,16 +8,20 @@
 
 - 维护一个全局的Environment [ok]
 - 每一层将Environment入栈 [ok]
-- 检查每一层的数据类型    [working]
+- 检查每一层的数据类型    [ok]
+    - 如果是其他类型则默认加入Environment
 	- 如果是dict, 则认为是下一层
-	- 如果是List, 则将其并列展开
-	- 允许添加name$Method指定解析方式
-		- list$arg
-	- 如果是其他类型则默认加入Environment
-- 允许prefix_name避免单元素的List
-	- arg_type, arg_name
-- 允许key&进行部分填入
+	- 如果是List
+	    - 如果下一层是基本类型, 则以,分隔加入env
+	    - 如果下一层是dict, 且dict的元素全为基本类型, 而且名称与上层前缀相同
+	        - 则认为是并列数据 prefix_name_index
+	        - 存在index则按照index的次序进行排序, 从0开始
+	        - 如果不存在index则按照文本先后顺序排序拼接
+- 允许key&进行部分填入 [ok]
 	- modifier&填入public, 子层可以填入其他modifier同时采用父层Modifier
+	- key$标记不采用部分填入, 而采用该值
+- 允许添加name$Method指定解析方式
+		- list$arg
 - 允许name#\d分组
 	- Varibles#1, Varibles#2
 	- 不同的组可以使用不同的全局参数
