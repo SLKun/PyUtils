@@ -20,8 +20,9 @@
 - 允许key&进行部分填入 [ok]
 	- modifier&填入public, 子层可以填入其他modifier同时采用父层Modifier
 	- key$标记不采用部分填入, 而采用该值
-- 允许添加name$Method指定解析方式
+- 允许添加name$Method指定解析方式 [ok]
 		- list$arg
+		- 需要在之后的解析中排除 [working]
 - 允许name#\d分组
 	- Varibles#1, Varibles#2
 	- 不同的组可以使用不同的全局参数

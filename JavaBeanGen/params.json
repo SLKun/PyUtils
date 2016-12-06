@@ -37,6 +37,7 @@
             ]
           },
           {
+            "testname$test$": "testcontent",
             "modifier": "static",
             "name": "insert",
             "retType": "int",

@@ -5,6 +5,8 @@ import os
 import sys
 import copy
 
+def test(item):
+    print item
 
 # helper function
 def print_dic(dic):
@@ -72,35 +74,40 @@ def parse_list_with_dict(key, alist):
                 s += ", "
     return s
 
-
 # update global Environment
 def update_environment(item):
     for key in item.keys():
-        has_suffix = 0
+        actual_key = key
         # examine keys name
-        if '&' in key:
-            gEnv["gSession"].append(key[0:-1])
-            has_suffix = 1
-        if '$' in key:
-            gEnv["gSession"].remove(key[0:-1])
-            has_suffix = 1
+        if '&' == key[-1]:
+            actual_key = key[0:-1]
+            gEnv["gSession"].append(actual_key)
+        if '$' == key[-1]:
+            actual_key = key[0:-1]
+            if actual_key in gEnv["gSession"]:
+                gEnv["gSession"].remove(actual_key)
+        if '$' in key[0:-1]:
+            key_splited = key.split("$")
+            actual_key = key_splited[0]
+            key_process = key_splited[1]
+            if key_process in globals():
+                exec key_process + "(item[key])"
         # normal type
         if not (isinstance(item[key], list) or isinstance(item[key], dict)):
-            if key in gEnv["gSession"] and gEnv.has_key(key):
-                gEnv[key] = gEnv[key] + " " + item[key]
-            elif has_suffix == 1:
-                gEnv[key[0:-1]] = item[key]
+            if actual_key in gEnv["gSession"] and '&' != key[-1]:
+                gEnv[actual_key] = gEnv[actual_key] + " " + item[key]
             else:
-                gEnv[key] = item[key]
+                gEnv[actual_key] = item[key]
         # for list
         if isinstance(item[key], list):
             # for list with normal type
-            gEnv[key] = parse_list_with_value(item[key])
+            gEnv[actual_key] = parse_list_with_value(item[key])
             # for list with dict
-            if gEnv[key] == "":
-                gEnv[key] = parse_list_with_dict(key, item[key])
-            if gEnv[key] == "":
-                gEnv.pop(key)
+            if gEnv[actual_key] == "":
+                gEnv[actual_key] = parse_list_with_dict(actual_key, item[key])
+            # if no match remove the key
+            if gEnv[actual_key] == "":
+                gEnv.pop(actual_key)
 
 
 # get Var from Environment
@@ -116,16 +123,16 @@ def push(item):
     lastEnv = copy.deepcopy(gEnv)
     gStack.append(lastEnv)
     update_environment(item)
-    print "PUSHED: "
-    print_stack()
+    # print "PUSHED: "
+    # print_stack()
 
 
 def pop():
     global gEnv
     if len(gStack) != 0:
         gEnv = gStack.pop()
-    print "POPED:"
-    print_stack()
+    # print "POPED:"
+    # print_stack()
 
 
 # arugments
