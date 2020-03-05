@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 #
+# Convert My boy! CHT to EZ-Flash CHT
 # Author: SLKun <summerslyb@gmail.com>
-# Website: https://github.com/SLKun/PyUtils/GBACheats/convert.py
+# Website: https://github.com/SLKun/PyUtils/blob/master/GBACheats/convert.py
 #
 
 import sys
@@ -41,8 +42,8 @@ for cheat in cheats:
 
 # Generate EZ-Flash CHT
 for name in dicts.keys():
-    print("[%s]\nON=" % name, end='')
-    print(";".join(dicts[name]) + "\n")
+    print("[%s]" % name, end='')
+    print("ON=" + ";".join(dicts[name]) + "\n")
 
 filename = filename[:-4]
 print("[GameInfo]")
