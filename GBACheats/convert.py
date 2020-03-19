@@ -5,15 +5,29 @@
 # Website: https://github.com/SLKun/PyUtils/blob/master/GBACheats/convert.py
 #
 
+import re
 import sys
 import xml.dom.minidom
 
 def convertData(data):
     datas = data.split(" ");
-    if(datas[0][0] == '3'): # Half-Word
+    command = datas[0][0];
+    if(command == '3'): # Half-Word RAM Write
         return ("%s,%s" % (datas[0][3:], datas[1][2:4]))
-    elif(datas[0][0] == '8'): # Full-Word
+    elif(command == '8'): # Full-Word RAM Write
         return ("%s,%s,%s" % (datas[0][3:], datas[1][2:4], datas[1][0:2]))
+    elif(command == '1' or command == 'D'): # Hook Code & Pad Read
+        return # Ignore
+    elif(command == '6'): # Math Operation
+        return # Ignore
+    elif(command == '7' or command == 'A' or command == 'F'): # Condition
+        pass
+    elif(command == '4' or command == '0' or command == 'E'): # Slide Code
+        pass
+    else:
+        pass
+        #print("Unknown Command: " + command)
+    return "error"
 
 # Parse command line
 if(len(sys.argv) == 1):
@@ -29,21 +43,25 @@ dicts = {}
 DOMTree = xml.dom.minidom.parse(filename)
 cheats = DOMTree.documentElement.getElementsByTagName("cheat")
 for cheat in cheats:    
-    name = cheat.getAttribute("name")
-    if(name != "M"):
-        codes = cheat.getElementsByTagName("code");
-        for code in codes:
-            if name not in dicts:
-                dicts[name] = []
+    name = re.sub(r' \[.*\]', "", cheat.getAttribute("name")) # remove [] in name
+    codes = cheat.getElementsByTagName("code")
+    for code in codes:
+        if name not in dicts:
+            dicts[name] = []
 
-            data = convertData(code.firstChild.data)
-            if(data):
+        data = convertData(code.firstChild.data)
+        if(data):
+            if(data == "error"):
+                dicts[name].clear()
+                break
+            else:
                 dicts[name].append(data)
 
 # Generate EZ-Flash CHT
 for name in dicts.keys():
-    print("[%s]" % name, end='')
-    print("ON=" + ";".join(dicts[name]) + "\n")
+    if(len(dicts[name]) > 0):
+        print("[%s]" % name)
+        print("ON=" + ";".join(dicts[name]) + ";\n")
 
 filename = filename[:-4]
 print("[GameInfo]")
