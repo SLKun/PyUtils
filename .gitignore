@@ -91,3 +91,6 @@ ENV/
 # User Defined
 *.bak
 .idea
+
+# Special Files
+GBACheats/*.cht
